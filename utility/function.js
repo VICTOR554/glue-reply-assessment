@@ -48,3 +48,24 @@ exports.validateRegistrationParameter = function (data, result) {
   }
   return result;
 };
+
+exports.validatePaymentParameter = function (data, result) {
+  if (!data.creditCard || typeof data.creditCard !== 'number') {
+    result.status = 400;
+    result.msg += 'Credit card parameter is not valid';
+  } else if (!data.creditCard || data.creditCard.toString().length !== 16) {
+    result.status = 400;
+    result.msg += 'Credit card parameter should have 16 digits';
+  }
+
+  if (!data.amount || typeof data.amount !== 'number') {
+    result.status = 400;
+    result.msg += 'Amount parameter is not valid';
+  }
+
+  if (!result.status) {
+    result.status = 201;
+    result.msg = 'Succcess from validation Params';
+  }
+  return result;
+};
