@@ -7,12 +7,22 @@ exports.validateRegistrationParameter = function (data, result) {
     result.msg += 'name parameter must atleast one uppercase letter & number';
   }
 
-  if (!data.email || typeof data.email !== 'string') {
+  if (
+    !data.email ||
+    typeof data.email !== 'string' ||
+    !data.email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    )
+  ) {
     result.status = 400;
     result.msg += 'email parameter is not valid';
   }
 
-  if (!data.dateOfBirth || typeof data.dateOfBirth !== 'string') {
+  if (
+    !data.dateOfBirth ||
+    typeof data.dateOfBirth !== 'string' ||
+    !Date.parse(data.dateOfBirth)
+  ) {
     result.status = 400;
     result.msg += 'Date of birth parameter is not valid';
   }
