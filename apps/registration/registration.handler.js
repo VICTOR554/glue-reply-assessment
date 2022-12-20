@@ -3,7 +3,7 @@ const data = fs.readFileSync('./data/user.json');
 const user = JSON.parse(data);
 
 const getAllUser = function (req, res) {
-  res.status(200).json({ success: true, data: user });
+  res.status(200).json({ success: true, count: user.length, data: user });
 };
 
 const createUser = function (req, res) {
@@ -28,10 +28,17 @@ const createUser = function (req, res) {
 
     const data = JSON.stringify(user, null, 2);
     fs.writeFile('./data/user.json', data, (err) => {
-      result.status = '201';
-      result.msg = 'success';
+      if (err) {
+        result.status = '400';
+        result.msg = err;
 
-      res.status(result.status).send(result);
+        res.status(result.status).send(result);
+      } else {
+        result.status = '201';
+        result.msg = 'success';
+
+        res.status(result.status).send(result);
+      }
     });
   }
 };
