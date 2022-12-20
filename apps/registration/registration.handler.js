@@ -1,6 +1,6 @@
 const fs = require('fs');
-const data = fs.readFileSync('./data/user.json');
-const user = JSON.parse(data);
+const database = fs.readFileSync('./data/user.json');
+const user = JSON.parse(database);
 const functions = require('../../utility/function');
 
 const getAllUser = function (req, res) {
@@ -14,24 +14,27 @@ const createUser = function (req, res) {
     data: user,
   };
 
-  if (!req.body) {
+  let data = req.body;
+
+  if (!data) {
     result.status = 400;
     result.msg = 'There is no req.body';
     res.status(result.status).send(result);
   } else {
     //function to validate Registration Parameter
-    result = functions.validateRegistrationParameter(req.body, result);
+    data = functions.configureRegistrationParameter(data);
+    result = functions.validateRegistrationParameter(data, result);
 
     user.push({
-      name: req.body.name,
-      email: req.body.email,
-      dateOfBirth: req.body.dateOfBirth,
-      creditCard: req.body.creditCard,
-      password: req.body.password,
+      name: data.name,
+      email: data.email,
+      dateOfBirth: data.dateOfBirth,
+      creditCard: data.creditCard,
+      password: data.password,
     });
 
-    const data = JSON.stringify(user, null, 2);
-    fs.writeFile('./data/user.json', data, (err) => {
+    const database = JSON.stringify(user, null, 2);
+    fs.writeFile('./data/user.json', database, (err) => {
       if (err) {
         result.status = '400';
         result.msg = err;
