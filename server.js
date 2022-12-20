@@ -3,11 +3,11 @@ const express = require('express');
 //Route file
 const register = require('./apps/registration/registration');
 
-//Mount routers
-app.use('/registration', register);
-
 //initialize app variable with express
 const app = express();
+
+//Mount routers
+app.use('/user', register);
 
 const PORT = 6000;
 
