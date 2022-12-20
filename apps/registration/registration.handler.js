@@ -24,6 +24,7 @@ const createUser = function (req, res) {
     //function to validate Registration Parameter
     data = functions.configureRegistrationParameter(data);
     result = functions.validateRegistrationParameter(data, result);
+    result = functions.checkUserIsUnderage(data, result);
 
     user.push({
       name: data.name,
