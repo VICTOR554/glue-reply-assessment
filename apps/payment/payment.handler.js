@@ -7,7 +7,38 @@ const getAllPayment = function (req, res) {
 };
 
 const createPayment = function (req, res) {
-  res.status(200).json({ success: true });
+  let result = {
+    status: '',
+    msg: '',
+    count: payment.length,
+    data: payment,
+  };
+
+  if (!req.body) {
+    result.status = 400;
+    result.msg = 'There is no req.body';
+    res.status(result.status).send(payment);
+  } else {
+    payment.push({
+      creditCard: req.body.creditCard,
+      amount: req.body.amount,
+    });
+
+    const data = JSON.stringify(payment, null, 2);
+    fs.writeFile('./data/payment.json', data, (err) => {
+      if (err) {
+        result.status = '400';
+        result.msg = err;
+
+        res.status(result.status).send(result);
+      } else {
+        result.status = '201';
+        result.msg = 'success';
+
+        res.status(result.status).send(result);
+      }
+    });
+  }
 };
 
 module.exports = {
