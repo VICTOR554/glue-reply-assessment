@@ -80,3 +80,22 @@ exports.validatePaymentParameter = function (data, result) {
   }
   return result;
 };
+
+exports.checkUserIsUnderage = function (data, result) {
+  let today = new Date();
+  let age = today.getFullYear() - data.dateOfBirth.getFullYear();
+  let month = today.getMonth() - data.dateOfBirth.getMonth();
+  if (
+    month < 0 ||
+    (month === 0 && today.getDate() < data.dateOfBirth.getDate())
+  ) {
+    age--;
+  }
+
+  if (age < 18) {
+    result.status = 403;
+    result.msg = 'User is less than 18 years old';
+  }
+
+  return result;
+};
