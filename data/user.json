@@ -1,9 +1,23 @@
 [
-    {
-        "name": "victor",
-        "email": "victor@gmail.com",
-        "dateOfBirth": "12/12/2006",
-        "creditCard": 1234567890123456,
-        "password": "12345678"
-      }
+  {
+    "name": "victor",
+    "email": "victor@gmail.com",
+    "dateOfBirth": "12/12/2006",
+    "creditCard": 1234567890123456,
+    "password": "12345678"
+  },
+  {
+    "name": "G2",
+    "email": "victor@gmail.com",
+    "dateOfBirth": "12/12/2006",
+    "creditCard": 1234567890123456,
+    "password": "12345678"
+  },
+  {
+    "name": "G2",
+    "email": "victor@gmail.com",
+    "dateOfBirth": "12/12/2006",
+    "creditCard": 1234567890123456,
+    "password": "12345678"
+  }
 ]
