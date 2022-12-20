@@ -7,6 +7,9 @@ const payment = require('./apps/payment/payment');
 //initialize app variable with express
 const app = express();
 
+//Body parser
+app.use(express.json());
+
 //Mount routers
 app.use('/user', register);
 app.use('/payment', payment);
