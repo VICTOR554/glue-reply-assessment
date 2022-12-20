@@ -3,7 +3,7 @@ const router = express.Router();
 
 const handlers = require('./registration.handler');
 
-router.post('/new', handlers.createUser);
 router.get('/', handlers.getAllUser);
+router.post('/new', handlers.createUser);
 
 module.exports = router;
