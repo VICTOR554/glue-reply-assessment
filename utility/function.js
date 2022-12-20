@@ -97,3 +97,14 @@ exports.checkUserIsUnderage = function (data, result) {
 
   return result;
 };
+
+exports.checkUsernameIsInTheDatabase = function (oldData, newdata, result) {
+  for (let i = 0; i < oldData.length; i++) {
+    if (oldData.name[i] == newdata.name) {
+      result.status = 409;
+      result.msg = 'Username is already in the database';
+    }
+  }
+
+  return result;
+};
