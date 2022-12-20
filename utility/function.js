@@ -1,3 +1,14 @@
+exports.configureRegistrationParameter = function (data) {
+  //Remove white space in name
+  data.name = data.name.trim();
+
+  //Convert Date of birth to iso 8601
+  let dateOfBirth = new Date(data.dateOfBirth);
+  data.dateOfBirth = dateOfBirth.toISOString();
+
+  return data;
+};
+
 exports.validateRegistrationParameter = function (data, result) {
   if (!data.name || typeof data.name !== 'string') {
     result.status = 400;
