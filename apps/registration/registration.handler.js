@@ -13,21 +13,27 @@ const createUser = function (req, res) {
     data: user,
   };
 
-  user.push({
-    name: req.body.name,
-    email: req.body.email,
-    dateOfBirth: req.body.dateOfBirth,
-    creditCard: req.body.creditCard,
-    password: req.body.password,
-  });
-
-  const data = JSON.stringify(user, null, 2);
-  fs.writeFile('./data/user.json', data, (err) => {
-    result.status = '201';
-    result.msg = 'success';
-
+  if (!req.body) {
+    result.status = 400;
+    result.msg = 'There is no req.body';
     res.status(result.status).send(result);
-  });
+  } else {
+    user.push({
+      name: req.body.name,
+      email: req.body.email,
+      dateOfBirth: req.body.dateOfBirth,
+      creditCard: req.body.creditCard,
+      password: req.body.password,
+    });
+
+    const data = JSON.stringify(user, null, 2);
+    fs.writeFile('./data/user.json', data, (err) => {
+      result.status = '201';
+      result.msg = 'success';
+
+      res.status(result.status).send(result);
+    });
+  }
 };
 
 module.exports = {
