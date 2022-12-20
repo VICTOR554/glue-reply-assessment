@@ -1,6 +1,7 @@
 const fs = require('fs');
 const data = fs.readFileSync('./data/payment.json');
 const payment = JSON.parse(data);
+const functions = require('../../utility/function');
 
 const getAllPayment = function (req, res) {
   res.status(200).json({ success: true, count: payment.length, data: payment });
@@ -19,6 +20,9 @@ const createPayment = function (req, res) {
     result.msg = 'There is no req.body';
     res.status(result.status).send(payment);
   } else {
+    //function to validate Payment Parameter
+    result = functions.validateRegistrationParameter(req.body, result);
+
     payment.push({
       creditCard: req.body.creditCard,
       amount: req.body.amount,
@@ -32,9 +36,6 @@ const createPayment = function (req, res) {
 
         res.status(result.status).send(result);
       } else {
-        result.status = '201';
-        result.msg = 'success';
-
         res.status(result.status).send(result);
       }
     });
