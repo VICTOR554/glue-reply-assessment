@@ -82,13 +82,11 @@ exports.validatePaymentParameter = function (data, result) {
 };
 
 exports.checkUserIsUnderage = function (data, result) {
+  let dateOfBirth = new Date(data.dateOfBirth);
   let today = new Date();
-  let age = today.getFullYear() - data.dateOfBirth.getFullYear();
-  let month = today.getMonth() - data.dateOfBirth.getMonth();
-  if (
-    month < 0 ||
-    (month === 0 && today.getDate() < data.dateOfBirth.getDate())
-  ) {
+  let age = today.getFullYear() - dateOfBirth.getFullYear();
+  let month = today.getMonth() - dateOfBirth.getMonth();
+  if (month < 0 || (month === 0 && today.getDate() < dateOfBirth.getDate())) {
     age--;
   }
 
