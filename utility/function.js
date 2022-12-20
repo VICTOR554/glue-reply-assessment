@@ -30,13 +30,18 @@ exports.validateRegistrationParameter = function (data, result) {
   if (data.creditCard && typeof data.creditCard !== 'number') {
     result.status = 400;
     result.msg += 'Credit card parameter is not valid';
+  } else if (data.creditCard && data.creditCard.toString().length !== 16) {
+    result.status = 400;
+    result.msg += 'Credit card parameter should have 16 digits';
   }
 
   if (!data.password || typeof data.password !== 'string') {
     result.status = 400;
     result.msg += 'Password parameter is not valid';
+  } else if (data.password.length < 8) {
+    result.status = 400;
+    result.msg += 'Password must have 8 or more characters';
   }
-
   if (!result.status) {
     result.status = 201;
     result.msg = 'Succcess from validation Params';
