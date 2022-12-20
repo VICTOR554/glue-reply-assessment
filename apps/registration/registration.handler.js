@@ -25,6 +25,7 @@ const createUser = function (req, res) {
     data = functions.configureRegistrationParameter(data);
     result = functions.validateRegistrationParameter(data, result);
     result = functions.checkUserIsUnderage(data, result);
+    result = functions.checkUsernameIsInTheDatabase(user, data, result);
 
     user.push({
       name: data.name,
