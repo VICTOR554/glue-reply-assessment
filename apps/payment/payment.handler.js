@@ -19,7 +19,7 @@ const createPayment = function (req, res) {
 
   let data = req.body;
 
-  //function to validate Payment Parameter
+  //function to validate and check Payment Parameter
   result = functions.validatePaymentParameter(data, result);
   result = functions.checkCreditCardHasAUser(user, data, result);
 
@@ -36,10 +36,11 @@ const createPayment = function (req, res) {
         result.msg = err;
 
         res.status(result.status).send(result);
+      } else {
+        result.status = 201;
+        result.msg = 'Success';
+        res.status(result.status).send(result);
       }
-      result.status = 201;
-      result.msg = 'Success';
-      res.status(result.status).send(result);
     });
   } else {
     res.status(result.status).send(result);
