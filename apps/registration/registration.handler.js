@@ -4,7 +4,29 @@ const user = JSON.parse(database);
 const functions = require('../../utility/function');
 
 const getAllUser = function (req, res) {
-  res.status(200).json({ success: true, count: user.length, data: user });
+  let result = {
+    status: 201,
+    msg: 'All the user in the database',
+    query: '',
+    count: user.length,
+    data: user,
+  };
+  if (!user) {
+    result.status = 400;
+    result.msg = 'There is no user in the database';
+
+    res.status(result.status).send({ result });
+  } else if (Object.keys(req.query).length !== 0) {
+    data = functions.queryUserHasACreditCard(user, req.query, result).data;
+    result = functions.queryUserHasACreditCard(user, req.query, result).result;
+    result.status = 201;
+    result.query = req.query;
+    result.count = data.length;
+    result.data = data;
+    return res.status(result.status).send(result);
+  }
+
+  res.status(result.status).send(result);
 };
 
 const createUser = function (req, res) {
