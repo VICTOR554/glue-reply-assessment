@@ -21,6 +21,7 @@ const createPayment = function (req, res) {
 
   //function to validate Payment Parameter
   result = functions.validatePaymentParameter(data, result);
+  result = functions.checkCreditCardHasAUser(user, data, result);
 
   if (!result.status) {
     payment.push({
