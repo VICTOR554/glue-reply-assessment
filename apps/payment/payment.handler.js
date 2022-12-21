@@ -9,22 +9,18 @@ const getAllPayment = function (req, res) {
 
 const createPayment = function (req, res) {
   let result = {
-    status: '',
-    msg: '',
+    status: 201,
+    msg: 'success',
     count: payment.length,
     data: payment,
   };
 
   let data = req.body;
 
-  if (!data) {
-    result.status = 400;
-    result.msg = 'There is no req.body';
-    res.status(result.status).send(payment);
-  } else {
-    //function to validate Payment Parameter
-    result = functions.validateRegistrationParameter(data, result);
+  //function to validate Payment Parameter
+  result = functions.validateRegistrationParameter(data, result);
 
+  if (!result.status) {
     payment.push({
       creditCard: data.creditCard,
       amount: data.amount,
@@ -42,6 +38,7 @@ const createPayment = function (req, res) {
       }
     });
   }
+  res.status(result.status).send(result);
 };
 
 module.exports = {
