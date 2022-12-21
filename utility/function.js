@@ -1,8 +1,6 @@
 const configureRegistrationParameter = function (data) {
-  //Remove white space in name
-  data.name = data.name.trim();
-
   //Convert Date of birth to iso 8601
+  //Error new Date does not take dd/mm/yy
   let dateOfBirth = new Date(data.dateOfBirth);
   data.dateOfBirth = dateOfBirth.toISOString();
 
@@ -15,7 +13,8 @@ const validateRegistrationParameter = function (data, result) {
     result.msg += 'name parameter is not valid';
   } else if (data.name == data.name.toLowerCase() || !/\d/.test(data.name)) {
     result.status = 400;
-    result.msg += 'name parameter must atleast one uppercase letter & number';
+    result.msg +=
+      'name parameter must have at least one uppercase letter & number';
   }
 
   if (
@@ -69,6 +68,9 @@ const validatePaymentParameter = function (data, result) {
   if (!data.amount || typeof data.amount !== 'number') {
     result.status = 400;
     result.msg += 'Amount parameter is not valid';
+  } else if (data.amount.toString().length > 3) {
+    result.status = 400;
+    result.msg += 'Amount should have a maximum of 3 digits';
   }
 
   return result;
@@ -103,13 +105,15 @@ const checkUsernameIsInTheDatabase = function (oldData, newdata, result) {
 };
 
 const checkCreditCardHasAUser = function (oldData, newdata, result) {
+  let creditCardExist = false;
   for (let i = 0; i < oldData.length; i++) {
     if (oldData[i].creditCard == newdata.creditCard) {
-      result.status = 404;
+      creditCardExist = true;
     }
   }
 
-  if ((result.status = 404)) {
+  if (creditCardExist == false) {
+    result.status = 404;
     result.msg += 'Credit Card is not registered';
   }
 
