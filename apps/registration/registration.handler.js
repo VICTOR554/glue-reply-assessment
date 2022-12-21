@@ -5,8 +5,8 @@ const functions = require('../../utility/function');
 
 const getAllUser = function (req, res) {
   let result = {
-    status: 201,
-    msg: 'All the user in the database',
+    status: '',
+    msg: '',
     query: '',
     count: user.length,
     data: user,
@@ -19,34 +19,38 @@ const getAllUser = function (req, res) {
   } else if (Object.keys(req.query).length !== 0) {
     data = functions.queryUserHasACreditCard(user, req.query, result).data;
     result = functions.queryUserHasACreditCard(user, req.query, result).result;
+
     result.status = 201;
     result.query = req.query;
     result.count = data.length;
     result.data = data;
     return res.status(result.status).send(result);
+  } else {
+    result.status = 201;
+    result.msg = 'All the user in the database';
+    res.status(result.status).send(result);
   }
-
-  res.status(result.status).send(result);
 };
 
 const createUser = function (req, res) {
   let result = {
-    status: 201,
-    msg: 'success',
-    data: user,
+    status: '',
+    msg: '',
   };
 
   let data = req.body;
 
   //functions to configure, validate and check Registration Parameter
-  data = functions.configureRegistrationParameter(data);
+  if (data.dateOfBirth) {
+    data = functions.configureRegistrationParameter(data);
+  }
   result = functions.validateRegistrationParameter(data, result);
   result = functions.checkUserIsUnderage(data, result);
   result = functions.checkUsernameIsInTheDatabase(user, data, result);
 
   if (!result.status) {
     user.push({
-      name: data.name,
+      name: data.name.trim(),
       email: data.email,
       dateOfBirth: data.dateOfBirth,
       creditCard: data.creditCard,
@@ -61,12 +65,14 @@ const createUser = function (req, res) {
 
         res.status(result.status).send(result);
       } else {
+        result.status = 201;
+        result.msg = 'Success';
         res.status(result.status).send(result);
       }
     });
+  } else {
+    res.status(result.status).send(result);
   }
-
-  res.status(result.status).send(result);
 };
 
 module.exports = {
