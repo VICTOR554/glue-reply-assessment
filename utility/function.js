@@ -108,3 +108,27 @@ exports.checkUsernameIsInTheDatabase = function (oldData, newdata, result) {
 
   return result;
 };
+
+exports.queryUserHasACreditCard = function (data, query, result) {
+  let newData = [];
+  let q = Object.values(query)[0];
+
+  if (q == 'yes') {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].creditCard) {
+        newData.push(data[i]);
+      }
+      result.msg = `All users with a credit card `;
+    }
+  } else if (q == 'no') {
+    for (let i = 0; i < data.length; i++) {
+      if (!data[i].creditCard) {
+        newData.push(data[i]);
+      }
+      result.msg = `All users without a credit card `;
+    }
+  }
+  data = newData;
+
+  return { data, result };
+};
