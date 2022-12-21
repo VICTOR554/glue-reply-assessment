@@ -1,4 +1,4 @@
-exports.configureRegistrationParameter = function (data) {
+const configureRegistrationParameter = function (data) {
   //Remove white space in name
   data.name = data.name.trim();
 
@@ -9,7 +9,7 @@ exports.configureRegistrationParameter = function (data) {
   return data;
 };
 
-exports.validateRegistrationParameter = function (data, result) {
+const validateRegistrationParameter = function (data, result) {
   if (!data.name || typeof data.name !== 'string') {
     result.status = 400;
     result.msg += 'name parameter is not valid';
@@ -53,14 +53,11 @@ exports.validateRegistrationParameter = function (data, result) {
     result.status = 400;
     result.msg += 'Password must have 8 or more characters';
   }
-  if (!result.status) {
-    result.status = 201;
-    result.msg = 'Succcess from validation Params';
-  }
+
   return result;
 };
 
-exports.validatePaymentParameter = function (data, result) {
+const validatePaymentParameter = function (data, result) {
   if (!data.creditCard || typeof data.creditCard !== 'number') {
     result.status = 400;
     result.msg += 'Credit card parameter is not valid';
@@ -74,14 +71,10 @@ exports.validatePaymentParameter = function (data, result) {
     result.msg += 'Amount parameter is not valid';
   }
 
-  if (!result.status) {
-    result.status = 201;
-    result.msg = 'Succcess from validation Params';
-  }
   return result;
 };
 
-exports.checkUserIsUnderage = function (data, result) {
+const checkUserIsUnderage = function (data, result) {
   let dateOfBirth = new Date(data.dateOfBirth);
   let today = new Date();
   let age = today.getFullYear() - dateOfBirth.getFullYear();
@@ -92,26 +85,40 @@ exports.checkUserIsUnderage = function (data, result) {
 
   if (age < 18) {
     result.status = 403;
-    result.msg = 'User is less than 18 years old';
+    result.msg += 'User is less than 18 years old';
   }
 
   return result;
 };
 
-exports.checkUsernameIsInTheDatabase = function (oldData, newdata, result) {
+const checkUsernameIsInTheDatabase = function (oldData, newdata, result) {
   for (let i = 0; i < oldData.length; i++) {
     if (oldData[i].name == newdata.name) {
       result.status = 409;
-      result.msg = 'Username is already in the database';
+      result.msg += 'Username is already in the database';
     }
   }
 
   return result;
 };
 
-exports.queryUserHasACreditCard = function (data, query, result) {
+const checkCreditCardHasAUser = function (oldData, newdata, result) {
+  for (let i = 0; i < oldData.length; i++) {
+    if (oldData[i].creditCard == newdata.creditCard) {
+      result.status = 404;
+    }
+  }
+
+  if ((result.status = 404)) {
+    result.msg += 'Credit Card is not registered';
+  }
+
+  return result;
+};
+
+const queryUserHasACreditCard = function (data, query, result) {
   let newData = [];
-  let q = Object.values(query)[0];
+  let q = Object.values(query)[0].toLowerCase();
 
   if (q == 'yes') {
     for (let i = 0; i < data.length; i++) {
@@ -131,4 +138,14 @@ exports.queryUserHasACreditCard = function (data, query, result) {
   data = newData;
 
   return { data, result };
+};
+
+module.exports = {
+  configureRegistrationParameter,
+  validateRegistrationParameter,
+  validatePaymentParameter,
+  checkUserIsUnderage,
+  checkUsernameIsInTheDatabase,
+  checkCreditCardHasAUser,
+  queryUserHasACreditCard,
 };
