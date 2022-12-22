@@ -1,11 +1,12 @@
-const configureRegistrationParameter = function (data) {
-  //Convert Date of birth to iso 8601
-  //Error new Date does not take dd/mm/yy
-  let dateOfBirth = new Date(data.dateOfBirth);
+function configureDateOfBirthParameter(data) {
+  //Convert dateOfBirth to dd/mm/yyyy
+  //Convert date of birth to iso 8601
+  const date = data.dateOfBirth.split('/');
+  let dateOfBirth = new Date(date[1] + '/' + date[0] + '/' + date[2]);
   data.dateOfBirth = dateOfBirth.toISOString();
 
   return data;
-};
+}
 
 const validateRegistrationParameter = function (data, result) {
   if (!data.name || typeof data.name !== 'string') {
@@ -24,13 +25,16 @@ const validateRegistrationParameter = function (data, result) {
     result.msg += 'email parameter is not valid';
   }
 
-  if (
-    !data.dateOfBirth ||
-    typeof data.dateOfBirth !== 'string' ||
-    !Date.parse(data.dateOfBirth)
-  ) {
+  if (!data.dateOfBirth || typeof data.dateOfBirth !== 'string') {
     result.status = 400;
     result.msg += 'Date of birth parameter is not valid';
+  } else {
+    data = configureDateOfBirthParameter(data);
+
+    if (!Date.parse(data.dateOfBirth)) {
+      result.status = 400;
+      result.msg += 'Date of birth parameter is not valid';
+    }
   }
 
   if (data.creditCard && typeof data.creditCard !== 'number') {
@@ -148,7 +152,6 @@ const queryUserHasACreditCard = function (data, query, result) {
 };
 
 module.exports = {
-  configureRegistrationParameter,
   validateRegistrationParameter,
   validatePaymentParameter,
   checkUserIsUnderage,
