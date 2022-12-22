@@ -99,4 +99,21 @@ describe('Create Payment Function', () => {
       );
     });
   });
+
+  context('Payment is valid to be tested', () => {
+    // after(() => {
+    //   console.log('=========after');
+    //   // console.log('res   :' + Object.keys(res));
+    //   console.log('res2  2  :' + res.statusCode);
+    //   // handler.createUser(req, res).removeAllListeners('event');
+    // });
+    it('it payment is valid', () => {
+      handler.createPayment(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(201);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain('Success');
+    });
+  });
 });
