@@ -1,18 +1,6 @@
 [
   {
-    "creditCard": 32,
-    "amount": 2
-  },
-  {
-    "creditCard": 12345,
-    "amount": 2
-  },
-  {
-    "creditCard": 12345,
-    "amount": 2
-  },
-  {
-    "creditCard": 12345,
-    "amount": 2
+    "creditCard": 1234567890123456,
+    "amount": 235
   }
 ]
