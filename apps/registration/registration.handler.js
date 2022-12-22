@@ -45,6 +45,7 @@ const createUser = function (req, res) {
   if (data.dateOfBirth) {
     data = functions.configureRegistrationParameter(data);
   }
+
   result = functions.validateRegistrationParameter(data, result);
   result = functions.checkUserIsUnderage(data, result);
   result = functions.checkUsernameIsInTheDatabase(user, data, result);
@@ -68,16 +69,13 @@ const createUser = function (req, res) {
       } else {
         result.status = 201;
         result.msg = 'Success';
-        // res.status(result.status).send(result);
         res.statusMessage = result.msg;
         res.status(result.status).json({ statusMessage: result.msg }).send();
         console.log(res.statusCode);
       }
     });
   } else {
-    // res.status(result.status).send(result);
     res.statusMessage = result.msg;
-
     res.status(result.status).json({ statusMessage: result.msg }).send();
     console.log(res.statusCode);
   }
