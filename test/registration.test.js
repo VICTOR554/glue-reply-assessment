@@ -199,4 +199,21 @@ describe('Create User Function', () => {
       res.statusMessage.should.contain('User is less than 18 years old');
     });
   });
+
+  context('User is valid to be tested', () => {
+    after(() => {
+      console.log('=========after');
+      // console.log('res   :' + Object.keys(res));
+      // console.log('res2  2  :' + res.statusCode);
+      // handler.createUser(req, res).removeAllListeners('event');
+    });
+    it('it user is valid', () => {
+      handler.createUser(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(201);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain('Success');
+    });
+  });
 });
