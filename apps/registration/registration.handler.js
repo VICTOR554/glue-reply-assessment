@@ -1,5 +1,6 @@
 const fs = require('fs');
-const database = fs.readFileSync('./data/user.json');
+const path = './data/user.json';
+const database = fs.readFileSync(path);
 const user = JSON.parse(database);
 const functions = require('../../utility/function');
 
@@ -58,7 +59,7 @@ const createUser = function (req, res) {
     });
 
     const database = JSON.stringify(user, null, 2);
-    fs.writeFile('./data/user.json', database, (err) => {
+    fs.writeFile(path, database, (err) => {
       if (err) {
         result.status = 400;
         result.msg = err;
@@ -67,11 +68,18 @@ const createUser = function (req, res) {
       } else {
         result.status = 201;
         result.msg = 'Success';
-        res.status(result.status).send(result);
+        // res.status(result.status).send(result);
+        res.statusMessage = result.msg;
+        res.status(result.status).json({ statusMessage: result.msg }).send();
+        console.log(res.statusCode);
       }
     });
   } else {
-    res.status(result.status).send(result);
+    // res.status(result.status).send(result);
+    res.statusMessage = result.msg;
+
+    res.status(result.status).json({ statusMessage: result.msg }).send();
+    console.log(res.statusCode);
   }
 };
 
