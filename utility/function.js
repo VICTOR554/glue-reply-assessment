@@ -11,10 +11,6 @@ const validateRegistrationParameter = function (data, result) {
   if (!data.name || typeof data.name !== 'string') {
     result.status = 400;
     result.msg += 'name parameter is not valid';
-  } else if (data.name == data.name.toLowerCase() || !/\d/.test(data.name)) {
-    result.status = 400;
-    result.msg +=
-      'name parameter must have at least one uppercase letter & number';
   }
 
   if (
@@ -51,6 +47,13 @@ const validateRegistrationParameter = function (data, result) {
   } else if (data.password.length < 8) {
     result.status = 400;
     result.msg += 'Password must have 8 or more characters';
+  } else if (
+    data.password == data.password.toLowerCase() ||
+    !/\d/.test(data.password)
+  ) {
+    result.status = 400;
+    result.msg +=
+      'password parameter must have at least one uppercase letter & number';
   }
 
   return result;
