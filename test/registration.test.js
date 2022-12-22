@@ -133,4 +133,70 @@ describe('Create User Function', () => {
       );
     });
   });
+
+  context('Password to be tested', () => {
+    it('it should check Password empty', () => {
+      req.body.password = '';
+      handler.createUser(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(400);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain('Password parameter is not valid');
+    });
+    it('it should check Password wrong data type', () => {
+      req.body.password = 1234;
+      handler.createUser(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(400);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain('Password parameter is not valid');
+    });
+    it('it should check Password wrong length', () => {
+      req.body.password = 'Pass1';
+      handler.createUser(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(400);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain(
+        'Password must have 8 or more characters'
+      );
+    });
+    it('it should check password must have one number', () => {
+      req.body.password = 'Passcode';
+      handler.createUser(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(400);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain(
+        'Password parameter must have at least one uppercase letter & number'
+      );
+    });
+    it('it should check password must have  one upper case letter', () => {
+      req.body.password = 'passcode1';
+      handler.createUser(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(400);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain(
+        'Password parameter must have at least one uppercase letter & number'
+      );
+    });
+  });
+
+  context('User is Underage to be tested', () => {
+    it('it should check user is Underage', () => {
+      req.body.dateOfBirth = '12/12/2010';
+      handler.createUser(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(403);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain('User is less than 18 years old');
+    });
+  });
 });
