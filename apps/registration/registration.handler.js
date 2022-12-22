@@ -15,7 +15,7 @@ const getAllUser = function (req, res) {
   if (!user) {
     result.status = 400;
     result.msg = 'There is no user in the database';
-
+    res.statusMessage = result.msg;
     res.status(result.status).send({ result });
   } else if (Object.keys(req.query).length !== 0) {
     data = functions.queryUserHasACreditCard(user, req.query, result).data;
@@ -39,15 +39,14 @@ const createUser = function (req, res) {
   let result = {
     status: '',
     msg: '',
+    data: user,
   };
 
   let data = req.body;
 
   //functions to configure, validate and check Registration Parameter
-  if (data.dateOfBirth) {
-    data = functions.configureRegistrationParameter(data);
-  }
-
+  let date = Date.parse('2000-12-12T00:00:00.000Z');
+  console.log('date       :' + date);
   result = functions.validateRegistrationParameter(data, result);
   result = functions.checkUserIsUnderage(data, result);
   result = functions.checkUsernameIsInTheDatabase(user, data, result);
@@ -73,17 +72,17 @@ const createUser = function (req, res) {
         result.msg = 'Success';
         res.statusMessage = result.msg;
         res.status(result.status).send(result);
-        console.log('res   :' + Object.keys(res));
-        console.log('res   code    :' + res.statusCode);
-        console.log('res2  msg        :' + res.statusMessage);
+        // console.log('res   :' + Object.keys(res));
+        // console.log('res   code    :' + res.statusCode);
+        // console.log('res2  msg        :' + res.statusMessage);
       }
     });
   } else {
     res.statusMessage = result.msg;
     res.status(result.status).send(result);
-    console.log('res   :' + Object.keys(res));
-    console.log('res   code    :' + res.statusCode);
-    console.log('res2  msg        :' + res.statusMessage);
+    // console.log('res   :' + Object.keys(res));
+    // console.log('res   code    :' + res.statusCode);
+    // console.log('res2  msg        :' + res.statusMessage);
   }
 };
 
