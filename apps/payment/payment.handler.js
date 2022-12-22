@@ -20,8 +20,8 @@ const createPayment = function (req, res) {
   let data = req.body;
 
   //function to validate and check Payment Parameter
-  result = functions.validatePaymentParameter(data, result);
   result = functions.checkCreditCardHasAUser(user, data, result);
+  result = functions.validatePaymentParameter(data, result);
 
   if (!result.status) {
     payment.push({
@@ -43,7 +43,9 @@ const createPayment = function (req, res) {
       }
     });
   } else {
-    res.status(result.status).send(result);
+    // res.status(result.status).send(result);
+    res.statusMessage = result.msg;
+    res.status(result.status).json({ statusMessage: result.msg }).end();
   }
 };
 
