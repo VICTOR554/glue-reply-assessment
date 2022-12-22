@@ -6,7 +6,23 @@ const database2 = fs.readFileSync('./data/user.json');
 const user = JSON.parse(database2);
 
 const getAllPayment = function (req, res) {
-  res.status(200).json({ success: true, count: payment.length, data: payment });
+  let result = {
+    status: '',
+    msg: '',
+    count: payment.length,
+    data: payment,
+  };
+  if (!payment) {
+    result.status = 400;
+    result.msg = 'There is no payment in the database';
+    res.statusMessage = result.msg;
+    res.status(result.status).send({ result });
+  } else {
+    result.status = 201;
+    result.msg = 'All the payment in the database';
+    res.statusMessage = result.msg;
+    res.status(result.status).send(result);
+  }
 };
 
 const createPayment = function (req, res) {
