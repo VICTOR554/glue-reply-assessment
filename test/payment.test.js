@@ -16,7 +16,25 @@ beforeEach(() => {
   res = httpMocks.createResponse();
 });
 
-describe('Get All Payment function', () => {});
+describe('Get All Payment function', () => {
+  context('Get All Payment to be tested', () => {
+    after(() => {
+      console.log('=========after');
+      // console.log('res   :' + Object.keys(req));
+      // console.log('res2  2  :' + res.statusCode);
+      // console.log('res2  2  :' + res.statusMessage);
+      // console.log('req   :' + req.params);
+    });
+    it('it should get all payment from the database', () => {
+      handler.getAllPayment(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(201);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain('All the payment in the database');
+    });
+  });
+});
 
 describe('Create Payment Function', () => {
   afterEach(() => {
