@@ -19,6 +19,26 @@ beforeEach(() => {
   res = httpMocks.createResponse();
 });
 
+describe('Get All User function', () => {
+  context('Get All User to be tested', () => {
+    after(() => {
+      console.log('=========after');
+      // console.log('res   :' + Object.keys(req));
+      // console.log('res2  2  :' + res.statusCode);
+      // console.log('res2  2  :' + res.statusMessage);
+      // console.log('req   :' + req.params);
+    });
+    it('it should get all users from the database', () => {
+      handler.getAllUser(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(201);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain('All the user in the database');
+    });
+  });
+});
+
 describe('Create User Function', () => {
   afterEach(() => {
     console.log('=========afterEach');
@@ -203,9 +223,9 @@ describe('Create User Function', () => {
   context('User is valid to be tested', () => {
     after(() => {
       console.log('=========after');
-      // console.log('res   :' + Object.keys(res));
-      // console.log('res2  2  :' + res.statusCode);
-      // handler.createUser(req, res).removeAllListeners('event');
+      console.log('res   :' + Object.keys(res));
+      console.log('res   code    :' + res.statusCode);
+      console.log('res2  msg        :' + res.statusMessage);
     });
     it('it user is valid', () => {
       handler.createUser(req, res);
