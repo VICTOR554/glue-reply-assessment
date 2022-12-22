@@ -25,10 +25,12 @@ const getAllUser = function (req, res) {
     result.query = req.query;
     result.count = data.length;
     result.data = data;
-    return res.status(result.status).send(result);
+    res.statusMessage = result.msg;
+    res.status(result.status).send(result);
   } else {
     result.status = 201;
     result.msg = 'All the user in the database';
+    res.statusMessage = result.msg;
     res.status(result.status).send(result);
   }
 };
@@ -70,14 +72,18 @@ const createUser = function (req, res) {
         result.status = 201;
         result.msg = 'Success';
         res.statusMessage = result.msg;
-        res.status(result.status).json({ statusMessage: result.msg }).send();
-        console.log(res.statusCode);
+        res.status(result.status).send(result);
+        console.log('res   :' + Object.keys(res));
+        console.log('res   code    :' + res.statusCode);
+        console.log('res2  msg        :' + res.statusMessage);
       }
     });
   } else {
     res.statusMessage = result.msg;
-    res.status(result.status).json({ statusMessage: result.msg }).send();
-    console.log(res.statusCode);
+    res.status(result.status).send(result);
+    console.log('res   :' + Object.keys(res));
+    console.log('res   code    :' + res.statusCode);
+    console.log('res2  msg        :' + res.statusMessage);
   }
 };
 
