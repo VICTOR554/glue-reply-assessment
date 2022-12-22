@@ -11,3 +11,11 @@ npm i -D nodemon
 npm i -D mocha
 npm i -D chai
 npm i -D node-mocks-http
+
+## To run app in development
+
+npm run dev
+
+## To test
+
+npm test
