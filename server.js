@@ -1,4 +1,8 @@
 const express = require('express');
+const dotenv = require('dotenv');
+
+//Load env vars
+dotenv.config({ path: './config/config.env' });
 
 //Route file
 const register = require('./apps/registration/registration');
@@ -14,7 +18,10 @@ app.use(express.json());
 app.use('/user', register);
 app.use('/payment', payment);
 
-const PORT = 6000;
+const PORT = process.env.PORT || 6000;
 
 //run server
-app.listen(PORT, console.log(`Server running on port ${PORT}`));
+app.listen(
+  PORT,
+  console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`)
+);
