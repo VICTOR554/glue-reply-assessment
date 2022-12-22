@@ -53,7 +53,7 @@ const validateRegistrationParameter = function (data, result) {
   ) {
     result.status = 400;
     result.msg +=
-      'password parameter must have at least one uppercase letter & number';
+      'Password parameter must have at least one uppercase letter & number';
   }
 
   return result;
