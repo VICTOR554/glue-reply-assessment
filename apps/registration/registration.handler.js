@@ -45,11 +45,17 @@ const createUser = function (req, res) {
   let data = req.body;
 
   //functions to configure, validate and check Registration Parameter
-  let date = Date.parse('2000-12-12T00:00:00.000Z');
-  console.log('date       :' + date);
-  result = functions.validateRegistrationParameter(data, result);
-  result = functions.checkUserIsUnderage(data, result);
   result = functions.checkUsernameIsInTheDatabase(user, data, result);
+  if (result.status) {
+    res.statusMessage = result.msg;
+    return res.status(result.status).send(result);
+  }
+  result = functions.checkUserIsUnderage(data, result);
+  if (result.status) {
+    res.statusMessage = result.msg;
+    return res.status(result.status).send(result);
+  }
+  result = functions.validateRegistrationParameter(data, result);
 
   if (!result.status) {
     user.push({
