@@ -1,15 +1,15 @@
 [
   {
-    "name": "G23",
+    "username": "T1",
     "email": "victor@gmail.com",
     "dateOfBirth": "2000-12-12T00:00:00.000Z",
-    "password": "12345678"
+    "creditCardNumber": 1234567890123456,
+    "password": "Passcode1"
   },
   {
-    "name": "H24",
+    "username": "Adam",
     "email": "victor@gmail.com",
-    "dateOfBirth": "2000-12-12T00:00:00.000Z",
-    "creditCard": 1234567890123456,
-    "password": "12345678"
+    "dateOfBirth": "2002-12-01T00:00:00.000Z",
+    "password": "Passcode1"
   }
 ]
