@@ -12,7 +12,6 @@ const getAllUser = function (req, res) {
     count: '',
     data: '',
   };
-
   if (!user) {
     result.status = 400;
     result.msg = 'There is no user in the database';
