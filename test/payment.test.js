@@ -10,7 +10,7 @@ let req, res, newPayment;
 
 beforeEach(() => {
   newPayment = {
-    creditCard: 1234567890123456,
+    creditCardNumber: 1234567890123456,
     amount: 123,
   };
 });
@@ -67,7 +67,7 @@ describe('Create Payment Function', () => {
 
   context('Credit Card to be tested', () => {
     it('it should check Credit Card is not empty', () => {
-      req.body.creditCard = '';
+      req.body.creditCardNumber = '';
       handler.createPayment(req, res);
       res.should.be.a('object');
       res.should.have.property('statusCode');
@@ -75,11 +75,11 @@ describe('Create Payment Function', () => {
       resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Credit card parameter is not valid');
+      resData.msg.should.equal('Credit card number is not valid');
     });
 
     it('it should check Credit Card is wrong data type', () => {
-      req.body.creditCard = 'credit';
+      req.body.creditCardNumber = 'credit';
       handler.createPayment(req, res);
       res.should.be.a('object');
       res.should.have.property('statusCode');
@@ -87,11 +87,11 @@ describe('Create Payment Function', () => {
       resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Credit card parameter is not valid');
+      resData.msg.should.equal('Credit card number is not valid');
     });
 
     it('it should check Credit Card is wrong length', () => {
-      req.body.creditCard = 1234;
+      req.body.creditCardNumber = 1234;
       handler.createPayment(req, res);
       res.should.be.a('object');
       res.should.have.property('statusCode');
@@ -99,11 +99,11 @@ describe('Create Payment Function', () => {
       resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Credit card parameter should have 16 digits');
+      resData.msg.should.equal('Credit card number should have 16 digits');
     });
 
     it('it should check Credit Card is registered to a user', () => {
-      req.body.creditCard = 1212121212121212;
+      req.body.creditCardNumber = 1212121212121212;
       handler.createPayment(req, res);
       res.should.be.a('object');
       res.should.have.property('statusCode');
@@ -111,7 +111,7 @@ describe('Create Payment Function', () => {
       resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Credit Card is not registered');
+      resData.msg.should.equal('Credit Card number is not registered');
     });
   });
 
@@ -125,7 +125,7 @@ describe('Create Payment Function', () => {
       resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Amount parameter is not valid');
+      resData.msg.should.equal('Amount is not valid');
     });
     it('it should check amount is wrong data type', () => {
       req.body.amount = '2';
@@ -136,7 +136,7 @@ describe('Create Payment Function', () => {
       resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Amount parameter is not valid');
+      resData.msg.should.equal('Amount is not valid');
     });
     it('it should check amount is less than 3 digits ', () => {
       req.body.amount = 2033;
