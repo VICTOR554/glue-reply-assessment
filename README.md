@@ -80,3 +80,18 @@ registration.test.js holds 21 test cases, while payment.test.js holds 9 test cas
 ## Running the application
 
 The project has been set up to run server.js whenever you run `npm start` in the terminal.
+
+## GET Route
+
+1. http://localhost:6000/payment/all
+2. http://localhost:6000/registration/all
+
+## POST Route
+
+1. http://localhost:6000/payment/new
+2. http://localhost:6000/registration/new
+
+## GET Query
+
+1. http://localhost:6000/registration/all?CreditCard=yes
+2. http://localhost:6000/registration/all?CreditCard=yes
