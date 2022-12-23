@@ -9,9 +9,10 @@ const getAllUser = function (req, res) {
     status: '',
     msg: '',
     query: '',
-    count: user.length,
-    data: user,
+    count: '',
+    data: '',
   };
+
   if (!user) {
     result.status = 400;
     result.msg = 'There is no user in the database';
@@ -26,6 +27,8 @@ const getAllUser = function (req, res) {
   } else {
     result.status = 201;
     result.msg = 'All the user in the database';
+    result.count = user.length;
+    result.data = user;
     res.status(result.status).json(result);
   }
 };
