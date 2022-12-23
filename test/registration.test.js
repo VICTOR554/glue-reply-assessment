@@ -119,16 +119,24 @@ describe('Create User Function', () => {
       res.should.have.property('statusMessage');
       res.statusMessage.should.contain('Date of birth parameter is not valid');
     });
-    // it('it should check Date of Birth is wrong data type', () => {
-    //   //DOES NOT WORK BECAUSE OF CONFIGURATION
-    //   req.body.dateOfBirth = 2;
-    //   handler.createUser(req, res);
-    //   res.should.be.a('object');
-    //   res.should.have.property('statusCode');
-    //   res.statusCode.should.equal(400);
-    //   res.should.have.property('statusMessage');
-    //   res.statusMessage.should.contain('Date of birth parameter is not valid');
-    // });
+    it('it should check Date of Birth is wrong data type', () => {
+      req.body.dateOfBirth = 2;
+      handler.createUser(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(400);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain('Date of birth parameter is not valid');
+    });
+    it('it should check Date of Birth is wrong format (dd/mm/yyyy) ', () => {
+      req.body.dateOfBirth = '12/123/2002';
+      handler.createUser(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(400);
+      res.should.have.property('statusMessage');
+      res.statusMessage.should.contain('Date of birth parameter is not valid');
+    });
   });
 
   context('Credit Card to be tested', () => {
