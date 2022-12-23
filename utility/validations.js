@@ -149,14 +149,14 @@ const queryUserHasACreditCard = function (data, query, result) {
       if (data[i].creditCard) {
         newData.push(data[i]);
       }
-      result.msg = `All users with a credit card `;
+      result.msg = 'All users with a credit card in the database';
     }
   } else if (q == 'no') {
     for (let i = 0; i < data.length; i++) {
       if (!data[i].creditCard) {
         newData.push(data[i]);
       }
-      result.msg = `All users without a credit card `;
+      result.msg = 'All users without a credit card in the database';
     }
   }
   result.data = newData;

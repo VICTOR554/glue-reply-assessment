@@ -1,7 +1,7 @@
 const fs = require('fs');
 const database = fs.readFileSync('./data/payment.json');
 const payment = JSON.parse(database);
-const functions = require('../../utility/function');
+const functions = require('../../utility/validations');
 const database2 = fs.readFileSync('./data/user.json');
 const user = JSON.parse(database2);
 

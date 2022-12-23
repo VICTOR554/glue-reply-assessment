@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = './data/user.json';
 const database = fs.readFileSync(path);
 const user = JSON.parse(database);
-const functions = require('../../utility/function');
+const functions = require('../../utility/validations');
 
 const getAllUser = function (req, res) {
   let result = {
