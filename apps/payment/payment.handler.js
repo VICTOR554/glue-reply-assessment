@@ -9,35 +9,39 @@ const getAllPayment = function (req, res) {
   let result = {
     status: '',
     msg: '',
+    query: '',
     count: payment.length,
     data: payment,
   };
+
   if (!payment) {
     result.status = 400;
     result.msg = 'There is no payment in the database';
-    res.statusMessage = result.msg;
-    res.status(result.status).send({ result });
+    res.status(result.status).json(result);
   } else {
     result.status = 201;
     result.msg = 'All the payment in the database';
-    res.statusMessage = result.msg;
-    res.status(result.status).send(result);
+    res.status(result.status).json(result);
   }
 };
 
 const createPayment = function (req, res) {
+  let data = req.body;
+
   let result = {
     status: '',
     msg: '',
-    count: payment.length,
     data: payment,
   };
 
-  let data = req.body;
-
   //function to validate and check Payment Parameter
-  result = functions.checkCreditCardHasAUser(user, data, result);
   result = functions.validatePaymentParameter(data, result);
+
+  if (result.status) {
+    return res.status(result.status).json(result);
+  }
+
+  result = functions.checkCreditCardHasAUser(user, data, result);
 
   if (!result.status) {
     payment.push({
@@ -50,7 +54,6 @@ const createPayment = function (req, res) {
       if (err) {
         result.status = 400;
         result.msg = err;
-
         res.status(result.status).send(result);
       } else {
         result.status = 201;
@@ -59,9 +62,7 @@ const createPayment = function (req, res) {
       }
     });
   } else {
-    // res.status(result.status).send(result);
-    res.statusMessage = result.msg;
-    res.status(result.status).json({ statusMessage: result.msg }).end();
+    res.status(result.status).json(result);
   }
 };
 
