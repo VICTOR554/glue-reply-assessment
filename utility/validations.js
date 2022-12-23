@@ -18,9 +18,9 @@ function configureDateOfBirthParameter(data) {
 }
 
 const validateRegistrationParameter = function (data, result) {
-  if (!data.name || typeof data.name !== 'string') {
+  if (!data.username || typeof data.username !== 'string') {
     result.status = 400;
-    result.msg += 'name parameter is not valid';
+    result.msg += 'username is not valid';
   }
 
   if (
@@ -31,36 +31,39 @@ const validateRegistrationParameter = function (data, result) {
     )
   ) {
     result.status = 400;
-    result.msg += 'email parameter is not valid';
+    result.msg += 'email is not valid';
   }
 
   if (!data.dateOfBirth || typeof data.dateOfBirth !== 'string') {
     result.status = 400;
-    result.msg += 'Date of birth parameter is not valid';
+    result.msg += 'Date of birth is not valid';
   } else {
     result.data.dateOfBirth = configureDateOfBirthParameter(data);
 
     if (result.data.dateOfBirth == null) {
       result.status = 400;
       result.msg +=
-        'Date of birth parameter is wrong format. It should be in format dd/mm/yyyy';
+        'Date of birth is wrong format. It should be in format dd/mm/yyyy';
     } else if (!Date.parse(result.data.dateOfBirth)) {
       result.status = 400;
-      result.msg += 'Date of birth parameter is not valid';
+      result.msg += 'Date of birth is not valid';
     }
   }
 
-  if (data.creditCard && typeof data.creditCard !== 'number') {
+  if (data.creditCardNumber && typeof data.creditCardNumber !== 'number') {
     result.status = 400;
-    result.msg += 'Credit card parameter is not valid';
-  } else if (data.creditCard && data.creditCard.toString().length !== 16) {
+    result.msg += 'Credit card number is not valid';
+  } else if (
+    data.creditCardNumber &&
+    data.creditCardNumber.toString().length !== 16
+  ) {
     result.status = 400;
-    result.msg += 'Credit card parameter should have 16 digits';
+    result.msg += 'Credit card number should have 16 digits';
   }
 
   if (!data.password || typeof data.password !== 'string') {
     result.status = 400;
-    result.msg += 'Password parameter is not valid';
+    result.msg += 'Password is not valid';
   } else if (data.password.length < 8) {
     result.status = 400;
     result.msg += 'Password must have 8 or more characters';
@@ -69,25 +72,27 @@ const validateRegistrationParameter = function (data, result) {
     !/\d/.test(data.password)
   ) {
     result.status = 400;
-    result.msg +=
-      'Password parameter must have at least one uppercase letter & number';
+    result.msg += 'Password must have at least one uppercase letter & number';
   }
 
   return result;
 };
 
 const validatePaymentParameter = function (data, result) {
-  if (!data.creditCard || typeof data.creditCard !== 'number') {
+  if (!data.creditCardNumber || typeof data.creditCardNumber !== 'number') {
     result.status = 400;
-    result.msg += 'Credit card parameter is not valid';
-  } else if (!data.creditCard || data.creditCard.toString().length !== 16) {
+    result.msg += 'Credit card number is not valid';
+  } else if (
+    !data.creditCardNumber ||
+    data.creditCardNumber.toString().length !== 16
+  ) {
     result.status = 400;
-    result.msg += 'Credit card parameter should have 16 digits';
+    result.msg += 'Credit card number should have 16 digits';
   }
 
   if (!data.amount || typeof data.amount !== 'number') {
     result.status = 400;
-    result.msg += 'Amount parameter is not valid';
+    result.msg += 'Amount is not valid';
   } else if (data.amount.toString().length > 3) {
     result.status = 400;
     result.msg += 'Amount should have a maximum of 3 digits';
@@ -115,7 +120,7 @@ const checkUserIsUnderage = function (data, result) {
 
 const checkUsernameIsInTheDatabase = function (oldData, newdata, result) {
   for (let i = 0; i < oldData.length; i++) {
-    if (oldData[i].name == newdata.name) {
+    if (oldData[i].username == newdata.username) {
       result.status = 409;
       result.msg += 'Username is already in the database';
     }
@@ -127,14 +132,14 @@ const checkUsernameIsInTheDatabase = function (oldData, newdata, result) {
 const checkCreditCardHasAUser = function (oldData, newdata, result) {
   let creditCardExist = false;
   for (let i = 0; i < oldData.length; i++) {
-    if (oldData[i].creditCard == newdata.creditCard) {
+    if (oldData[i].creditCardNumber == newdata.creditCardNumber) {
       creditCardExist = true;
     }
   }
 
   if (creditCardExist == false) {
     result.status = 404;
-    result.msg += 'Credit Card is not registered';
+    result.msg += 'Credit Card number is not registered';
   }
 
   return result;
@@ -146,17 +151,17 @@ const queryUserHasACreditCard = function (data, query, result) {
 
   if (q == 'yes') {
     for (let i = 0; i < data.length; i++) {
-      if (data[i].creditCard) {
+      if (data[i].creditCardNumber) {
         newData.push(data[i]);
       }
-      result.msg = 'All users with a credit card in the database';
+      result.msg = 'All users with a credit card number in the database';
     }
   } else if (q == 'no') {
     for (let i = 0; i < data.length; i++) {
-      if (!data[i].creditCard) {
+      if (!data[i].creditCardNumber) {
         newData.push(data[i]);
       }
-      result.msg = 'All users without a credit card in the database';
+      result.msg = 'All users without a credit card number in the database';
     }
   }
   result.data = newData;
