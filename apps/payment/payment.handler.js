@@ -45,7 +45,7 @@ const createPayment = function (req, res) {
 
   if (!result.status) {
     payment.push({
-      creditCard: data.creditCard,
+      creditCardNumber: data.creditCardNumber,
       amount: data.amount,
     });
 
