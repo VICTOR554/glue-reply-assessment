@@ -45,13 +45,13 @@ const createPayment = function (req, res) {
   result = functions.checkCreditCardHasAUser(user, data, result);
 
   if (!result.status) {
-    //push req.body to payment.json
+    //push req.body to payment[]
     payment.push({
       creditCardNumber: data.creditCardNumber,
       amount: data.amount,
     });
 
-    //save it to payment.json
+    //save it to data/payment.json
     const database = JSON.stringify(payment, null, 2);
     fs.writeFile('./data/payment.json', database, (err) => {
       if (err) {
