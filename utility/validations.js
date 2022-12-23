@@ -1,12 +1,17 @@
 function configureDateOfBirthParameter(data) {
   const date = data.dateOfBirth.split('/');
+  const day = date[1];
+  const month = date[0];
+  const year = date[2];
+  const m = +date[0];
+  const d = +date[1];
   //Check dateOfBirth input day, month and year is the right length
   if (
-    date[0].length > 2 ||
-    date[0] > 12 ||
-    date[1].length > 2 ||
-    date[1].length > 31 ||
-    date[2].length > 4
+    month[0].length > 2 ||
+    m > 12 ||
+    day.length > 2 ||
+    d > 31 ||
+    year.length > 4
   ) {
     data.dateOfBirth = null;
   } else {
