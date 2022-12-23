@@ -59,6 +59,7 @@ const createUser = function (req, res) {
   result = functions.validateRegistrationParameter(data, result);
 
   if (!result.status) {
+    //push req.body to user[]
     user.push({
       username: data.username.trim(),
       email: data.email,
@@ -67,6 +68,7 @@ const createUser = function (req, res) {
       password: data.password,
     });
 
+    //save it to data/registration.json
     const database = JSON.stringify(user, null, 2);
     fs.writeFile(path, database, (err) => {
       if (err) {
