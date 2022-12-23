@@ -10,7 +10,7 @@ let req, res, newUser, resData;
 
 beforeEach(() => {
   newUser = {
-    username: 'John2',
+    username: 'John',
     email: 'victor@gmail.com',
     dateOfBirth: '12/12/2000',
     creditCardNumber: 1234567890123456,
