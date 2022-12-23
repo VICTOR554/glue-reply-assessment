@@ -1,10 +1,13 @@
 function configureDateOfBirthParameter(data) {
-  //Convert dateOfBirth to dd/mm/yyyy
-  //Convert date of birth to iso 8601
   const date = data.dateOfBirth.split('/');
-  let dateOfBirth = new Date(date[1] + '/' + date[0] + '/' + date[2]);
-  data.dateOfBirth = dateOfBirth.toISOString();
-
+  //Check dateOfBirth input day, month and year is the right length
+  if (date[0].length > 2 || date[1].length > 2 || date[2].length > 4) {
+    data.dateOfBirth = null;
+  } else {
+    //Convert date format to dd/mm/yyyy and convert to iso 8601
+    let dateOfBirth = new Date(date[1] + '/' + date[0] + '/' + date[2]);
+    data.dateOfBirth = dateOfBirth.toISOString();
+  }
   return data;
 }
 
@@ -31,7 +34,7 @@ const validateRegistrationParameter = function (data, result) {
   } else {
     data = configureDateOfBirthParameter(data);
 
-    if (!Date.parse(data.dateOfBirth)) {
+    if (!Date.parse(data.dateOfBirth) || data.dateOfBirth == null) {
       result.status = 400;
       result.msg += 'Date of birth parameter is not valid';
     }
