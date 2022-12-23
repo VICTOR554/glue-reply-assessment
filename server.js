@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 
 //Mount routers
-app.use('/user', register);
+app.use('/registration', register);
 app.use('/payment', payment);
 
 const PORT = process.env.PORT || 6000;

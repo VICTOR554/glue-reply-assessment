@@ -30,7 +30,7 @@ describe('Get All User function', () => {
       // httpMocks
       req = httpMocks.createRequest({
         method: 'GET',
-        url: '/user',
+        url: '/registration/all',
       });
       res = httpMocks.createResponse();
     });
@@ -89,7 +89,7 @@ describe('Create User Function', () => {
     // httpMocks
     req = httpMocks.createRequest({
       method: 'GET',
-      url: '/user/new',
+      url: '/registration/new',
     });
     res = httpMocks.createResponse();
     req.body = newUser;

@@ -27,7 +27,7 @@ describe('Get All Payment function', () => {
       // httpMocks
       req = httpMocks.createRequest({
         method: 'GET',
-        url: '/payment',
+        url: '/payment/all',
       });
       res = httpMocks.createResponse();
     });
