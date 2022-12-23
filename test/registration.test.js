@@ -10,10 +10,10 @@ let req, res, newUser, resData;
 
 beforeEach(() => {
   newUser = {
-    name: 'John2',
+    username: 'John2',
     email: 'victor@gmail.com',
     dateOfBirth: '12/12/2000',
-    creditCard: 1234567890123456,
+    creditCardNumber: 1234567890123456,
     password: 'Passcode1',
   };
 });
@@ -48,7 +48,7 @@ describe('Get All User function', () => {
       resData.data.should.be.eql(user);
     });
 
-    it('it should get all users with credit card database', () => {
+    it('it should get all users with a credit card in the database', () => {
       req.query = { creditCard: 'yes' };
       handler.getAllUser(req, res);
       res.should.be.a('object');
@@ -57,7 +57,9 @@ describe('Get All User function', () => {
       resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('All users with a credit card in the database');
+      resData.msg.should.equal(
+        'All users with a credit card number in the database'
+      );
     });
 
     it('it should get all users without credit card the database', () => {
@@ -70,7 +72,7 @@ describe('Get All User function', () => {
       resData.should.be.a('object');
       resData.should.have.property('msg');
       resData.msg.should.equal(
-        'All users without a credit card in the database'
+        'All users without a credit card number in the database'
       );
     });
   });
@@ -94,7 +96,7 @@ describe('Create User Function', () => {
   });
   context('Username to be tested', () => {
     it('it should check username is empty', () => {
-      req.body.name = '';
+      req.body.username = '';
       handler.createUser(req, res);
       res.should.be.a('object');
       res.should.have.property('statusCode');
@@ -102,11 +104,11 @@ describe('Create User Function', () => {
       let resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('name parameter is not valid');
+      resData.msg.should.equal('username is not valid');
     });
 
     it('it should check username is wrong data type', () => {
-      req.body.name = 2;
+      req.body.username = 2;
       handler.createUser(req, res);
       res.should.be.a('object');
       res.should.have.property('statusCode');
@@ -114,7 +116,7 @@ describe('Create User Function', () => {
       let resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('name parameter is not valid');
+      resData.msg.should.equal('username is not valid');
     });
   });
 
@@ -128,7 +130,7 @@ describe('Create User Function', () => {
       let resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('email parameter is not valid');
+      resData.msg.should.equal('email is not valid');
     });
 
     it('it should check email is wrong data type', () => {
@@ -140,7 +142,7 @@ describe('Create User Function', () => {
       let resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('email parameter is not valid');
+      resData.msg.should.equal('email is not valid');
     });
 
     it('it should check email is wrong format ', () => {
@@ -152,7 +154,7 @@ describe('Create User Function', () => {
       let resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('email parameter is not valid');
+      resData.msg.should.equal('email is not valid');
     });
   });
 
@@ -166,7 +168,7 @@ describe('Create User Function', () => {
       let resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Date of birth parameter is not valid');
+      resData.msg.should.equal('Date of birth is not valid');
     });
 
     it('it should check Date of Birth is wrong data type', () => {
@@ -178,7 +180,7 @@ describe('Create User Function', () => {
       let resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Date of birth parameter is not valid');
+      resData.msg.should.equal('Date of birth is not valid');
     });
 
     it('it should check Date of Birth is wrong format (dd/mm/yyyy) ', () => {
@@ -191,14 +193,14 @@ describe('Create User Function', () => {
       resData.should.be.a('object');
       resData.should.have.property('msg');
       resData.msg.should.equal(
-        'Date of birth parameter is wrong format. It should be in format dd/mm/yyyy'
+        'Date of birth is wrong format. It should be in format dd/mm/yyyy'
       );
     });
   });
 
   context('Credit Card to be tested', () => {
     it('it should check Credit Card is wrong data type', () => {
-      req.body.creditCard = 'credit';
+      req.body.creditCardNumber = 'credit';
       handler.createUser(req, res);
       res.should.be.a('object');
       res.should.have.property('statusCode');
@@ -206,11 +208,11 @@ describe('Create User Function', () => {
       let resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Credit card parameter is not valid');
+      resData.msg.should.equal('Credit card number is not valid');
     });
 
     it('it should check Credit Card is wrong length', () => {
-      req.body.creditCard = 1234;
+      req.body.creditCardNumber = 1234;
       handler.createUser(req, res);
       res.should.be.a('object');
       res.should.have.property('statusCode');
@@ -218,7 +220,7 @@ describe('Create User Function', () => {
       let resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Credit card parameter should have 16 digits');
+      resData.msg.should.equal('Credit card number should have 16 digits');
     });
   });
 
@@ -232,7 +234,7 @@ describe('Create User Function', () => {
       let resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Password parameter is not valid');
+      resData.msg.should.equal('Password is not valid');
     });
 
     it('it should check Password wrong data type', () => {
@@ -244,7 +246,7 @@ describe('Create User Function', () => {
       let resData = res._getJSONData();
       resData.should.be.a('object');
       resData.should.have.property('msg');
-      resData.msg.should.equal('Password parameter is not valid');
+      resData.msg.should.equal('Password is not valid');
     });
 
     it('it should check Password wrong length', () => {
@@ -269,7 +271,7 @@ describe('Create User Function', () => {
       resData.should.be.a('object');
       resData.should.have.property('msg');
       resData.msg.should.equal(
-        'Password parameter must have at least one uppercase letter & number'
+        'Password must have at least one uppercase letter & number'
       );
     });
 
@@ -283,14 +285,14 @@ describe('Create User Function', () => {
       resData.should.be.a('object');
       resData.should.have.property('msg');
       resData.msg.should.equal(
-        'Password parameter must have at least one uppercase letter & number'
+        'Password must have at least one uppercase letter & number'
       );
     });
   });
 
   context('Username is registered', () => {
     it('it should check Username is registered', () => {
-      req.body.name = 'T1';
+      req.body.username = 'T1';
       handler.createUser(req, res);
       res.should.be.a('object');
       res.should.have.property('statusCode');
@@ -317,12 +319,6 @@ describe('Create User Function', () => {
   });
 
   context('User is valid to be tested', () => {
-    after(() => {
-      console.log('=========after');
-      console.log('res   :' + Object.keys(res));
-      console.log('res   code    :' + res.statusCode);
-      console.log('res2  msg        :' + res.statusMessage);
-    });
     it('it user is valid', () => {
       handler.createUser(req, res);
       res.should.be.a('object');
