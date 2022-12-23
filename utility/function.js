@@ -1,14 +1,20 @@
 function configureDateOfBirthParameter(data) {
   const date = data.dateOfBirth.split('/');
   //Check dateOfBirth input day, month and year is the right length
-  if (date[0].length > 2 || date[1].length > 2 || date[2].length > 4) {
+  if (
+    date[0].length > 2 ||
+    date[0] > 12 ||
+    date[1].length > 2 ||
+    date[1].length > 31 ||
+    date[2].length > 4
+  ) {
     data.dateOfBirth = null;
   } else {
     //Convert date format to dd/mm/yyyy and convert to iso 8601
     let dateOfBirth = new Date(date[1] + '/' + date[0] + '/' + date[2]);
     data.dateOfBirth = dateOfBirth.toISOString();
   }
-  return data;
+  return data.dateOfBirth;
 }
 
 const validateRegistrationParameter = function (data, result) {
@@ -32,9 +38,13 @@ const validateRegistrationParameter = function (data, result) {
     result.status = 400;
     result.msg += 'Date of birth parameter is not valid';
   } else {
-    data = configureDateOfBirthParameter(data);
+    result.data.dateOfBirth = configureDateOfBirthParameter(data);
 
-    if (!Date.parse(data.dateOfBirth) || data.dateOfBirth == null) {
+    if (result.data.dateOfBirth == null) {
+      result.status = 400;
+      result.msg +=
+        'Date of birth parameter is wrong format. It should be in format dd/mm/yyyy';
+    } else if (!Date.parse(result.data.dateOfBirth)) {
       result.status = 400;
       result.msg += 'Date of birth parameter is not valid';
     }
@@ -149,9 +159,9 @@ const queryUserHasACreditCard = function (data, query, result) {
       result.msg = `All users without a credit card `;
     }
   }
-  data = newData;
+  result.data = newData;
 
-  return { data, result };
+  return result;
 };
 
 module.exports = {
