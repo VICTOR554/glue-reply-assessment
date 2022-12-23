@@ -15,45 +15,40 @@ const getAllUser = function (req, res) {
   if (!user) {
     result.status = 400;
     result.msg = 'There is no user in the database';
-    res.statusMessage = result.msg;
-    res.status(result.status).send({ result });
+    res.status(result.status).json(result);
   } else if (Object.keys(req.query).length !== 0) {
-    data = functions.queryUserHasACreditCard(user, req.query, result).data;
-    result = functions.queryUserHasACreditCard(user, req.query, result).result;
+    result = functions.queryUserHasACreditCard(user, req.query, result);
 
     result.status = 201;
     result.query = req.query;
-    result.count = data.length;
-    result.data = data;
-    res.statusMessage = result.msg;
-    res.status(result.status).send(result);
+    result.count = result.data.length;
+    res.status(result.status).json(result);
   } else {
     result.status = 201;
     result.msg = 'All the user in the database';
-    res.statusMessage = result.msg;
-    res.status(result.status).send(result);
+    res.status(result.status).json(result);
   }
 };
 
 const createUser = function (req, res) {
+  let data = req.body;
+
   let result = {
     status: '',
     msg: '',
-    data: user,
+    data: data,
   };
 
-  let data = req.body;
-
-  //functions to configure, validate and check Registration Parameter
+  //functions to validate Registration Parameter
   result = functions.checkUsernameIsInTheDatabase(user, data, result);
+
   if (result.status) {
-    res.statusMessage = result.msg;
-    return res.status(result.status).send(result);
+    return res.status(result.status).json(result);
   }
   result = functions.checkUserIsUnderage(data, result);
+
   if (result.status) {
-    res.statusMessage = result.msg;
-    return res.status(result.status).send(result);
+    return res.status(result.status).json(result);
   }
   result = functions.validateRegistrationParameter(data, result);
 
@@ -61,7 +56,7 @@ const createUser = function (req, res) {
     user.push({
       name: data.name.trim(),
       email: data.email,
-      dateOfBirth: data.dateOfBirth,
+      dateOfBirth: result.data.dateOfBirth,
       creditCard: data.creditCard,
       password: data.password,
     });
@@ -76,19 +71,11 @@ const createUser = function (req, res) {
       } else {
         result.status = 201;
         result.msg = 'Success';
-        res.statusMessage = result.msg;
-        res.status(result.status).send(result);
-        // console.log('res   :' + Object.keys(res));
-        // console.log('res   code    :' + res.statusCode);
-        // console.log('res2  msg        :' + res.statusMessage);
+        res.status(result.status).json(result);
       }
     });
   } else {
-    res.statusMessage = result.msg;
-    res.status(result.status).send(result);
-    // console.log('res   :' + Object.keys(res));
-    // console.log('res   code    :' + res.statusCode);
-    // console.log('res2  msg        :' + res.statusMessage);
+    res.status(result.status).json(result);
   }
 };
 
