@@ -31,7 +31,7 @@ const createPayment = function (req, res) {
   let result = {
     status: '',
     msg: '',
-    data: payment,
+    data: data,
   };
 
   //function to validate and check Payment Parameter
