@@ -3,8 +3,12 @@ const should = chai.should();
 
 const handler = require('../apps/registration/registration.handler');
 const httpMocks = require('node-mocks-http');
+const fs = require('fs');
 
-let req, res, newUser;
+const database = fs.readFileSync('./data/user.json');
+const user = JSON.parse(database);
+
+let req, res, newUser, resData;
 beforeEach(() => {
   newUser = {
     name: 'John2',
@@ -13,28 +17,34 @@ beforeEach(() => {
     creditCard: 1234567890123456,
     password: 'Passcode1',
   };
-
-  // httpMocks
-  req = httpMocks.createRequest();
-  res = httpMocks.createResponse();
 });
 
 describe('Get All User function', () => {
   context('Get All User to be tested', () => {
-    after(() => {
-      console.log('=========after');
-      // console.log('res   :' + Object.keys(req));
-      // console.log('res2  2  :' + res.statusCode);
-      // console.log('res2  2  :' + res.statusMessage);
-      // console.log('req   :' + req.params);
+    afterEach(() => {
+      console.log('=========afterEach');
+      console.log('res   :' + res.statusCode);
+      console.log('=============================');
+    });
+    beforeEach(() => {
+      // httpMocks
+      req = httpMocks.createRequest({
+        method: 'GET',
+        url: '/user',
+      });
+      res = httpMocks.createResponse();
     });
     it('it should get all users from the database', () => {
       handler.getAllUser(req, res);
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(201);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('All the user in the database');
+      resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal('All the user in the database');
+      resData.data.should.be.an('array');
+      resData.data.should.be.eql(user);
     });
   });
 });
@@ -46,7 +56,12 @@ describe('Create User Function', () => {
     console.log('=============================');
   });
   beforeEach(() => {
-    // console.log('=========beforeeach');
+    // httpMocks
+    req = httpMocks.createRequest({
+      method: 'GET',
+      url: '/user/new',
+    });
+    res = httpMocks.createResponse();
     req.body = newUser;
   });
   context('Username to be tested', () => {
@@ -56,8 +71,10 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('name parameter is not valid');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal('name parameter is not valid');
     });
     it('it should check username is wrong data type', () => {
       req.body.name = 2;
@@ -65,17 +82,10 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('name parameter is not valid');
-    });
-    it('it should check Username is registered', () => {
-      req.body.name = 'T1';
-      handler.createUser(req, res);
-      res.should.be.a('object');
-      res.should.have.property('statusCode');
-      res.statusCode.should.equal(409);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('Username is already in the database');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal('name parameter is not valid');
     });
   });
 
@@ -86,8 +96,10 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('email parameter is not valid');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal('email parameter is not valid');
     });
     it('it should check email is wrong data type', () => {
       req.body.email = 2;
@@ -95,8 +107,10 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('email parameter is not valid');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal('email parameter is not valid');
     });
     it('it should check email is wrong format ', () => {
       req.body.email = 'victor.com';
@@ -104,8 +118,11 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('email parameter is not valid');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+
+      resData.should.have.property('msg');
+      resData.msg.should.equal('email parameter is not valid');
     });
   });
 
@@ -116,8 +133,11 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('Date of birth parameter is not valid');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+
+      resData.should.have.property('msg');
+      resData.msg.should.equal('Date of birth parameter is not valid');
     });
     it('it should check Date of Birth is wrong data type', () => {
       req.body.dateOfBirth = 2;
@@ -125,8 +145,11 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('Date of birth parameter is not valid');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+
+      resData.should.have.property('msg');
+      resData.msg.should.equal('Date of birth parameter is not valid');
     });
     it('it should check Date of Birth is wrong format (dd/mm/yyyy) ', () => {
       req.body.dateOfBirth = '12/123/2002';
@@ -134,8 +157,11 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('Date of birth parameter is not valid');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+
+      resData.should.have.property('msg');
+      resData.msg.should.equal('Date of birth parameter is not valid');
     });
   });
 
@@ -146,8 +172,11 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('Credit card parameter is not valid');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+
+      resData.should.have.property('msg');
+      resData.msg.should.equal('Credit card parameter is not valid');
     });
     it('it should check Credit Card is wrong length', () => {
       req.body.creditCard = 1234;
@@ -155,10 +184,10 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain(
-        'Credit card parameter should have 16 digits'
-      );
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal('Credit card parameter should have 16 digits');
     });
   });
 
@@ -169,8 +198,10 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('Password parameter is not valid');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal('Password parameter is not valid');
     });
     it('it should check Password wrong data type', () => {
       req.body.password = 1234;
@@ -178,8 +209,10 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('Password parameter is not valid');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal('Password parameter is not valid');
     });
     it('it should check Password wrong length', () => {
       req.body.password = 'Pass1';
@@ -187,10 +220,10 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain(
-        'Password must have 8 or more characters'
-      );
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal('Password must have 8 or more characters');
     });
     it('it should check password must have one number', () => {
       req.body.password = 'Passcode';
@@ -198,8 +231,10 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain(
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal(
         'Password parameter must have at least one uppercase letter & number'
       );
     });
@@ -209,10 +244,26 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(400);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain(
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal(
         'Password parameter must have at least one uppercase letter & number'
       );
+    });
+  });
+
+  context('Username is registered', () => {
+    it('it should check Username is registered', () => {
+      req.body.name = 'T1';
+      handler.createUser(req, res);
+      res.should.be.a('object');
+      res.should.have.property('statusCode');
+      res.statusCode.should.equal(409);
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal('Username is already in the database');
     });
   });
 
@@ -223,8 +274,10 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(403);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('User is less than 18 years old');
+      let resData = res._getJSONData();
+      resData.should.be.a('object');
+      resData.should.have.property('msg');
+      resData.msg.should.equal('User is less than 18 years old');
     });
   });
 
@@ -240,8 +293,17 @@ describe('Create User Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(201);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('Success');
     });
+    // it('it should check user is valid', () => {
+    //   handler.createUser(req, res);
+    //   res.should.be.a('object');
+    //   res.should.have.property('statusCode');
+    //   res.statusCode.should.equal(201);
+    //   let resData = res._getJSONData();
+    //   resData.should.have.property('msg');
+    //   resData.msg.should.equal('Success');
+    //   resData.data.should.be.an('array');
+    //   resData.data.should.be.eql(user);
+    // });
   });
 });
