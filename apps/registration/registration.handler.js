@@ -54,10 +54,10 @@ const createUser = function (req, res) {
 
   if (!result.status) {
     user.push({
-      name: data.name.trim(),
+      username: data.username.trim(),
       email: data.email,
       dateOfBirth: result.data.dateOfBirth,
-      creditCard: data.creditCard,
+      creditCardNumber: data.creditCardNumber,
       password: data.password,
     });
 
