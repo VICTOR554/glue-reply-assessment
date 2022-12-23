@@ -34,21 +34,24 @@ const createPayment = function (req, res) {
     data: data,
   };
 
-  //function to validate and check Payment Parameter
+  //function to validate Payment Parameter
   result = functions.validatePaymentParameter(data, result);
 
   if (result.status) {
     return res.status(result.status).json(result);
   }
 
+  //function to validate Credit Card has a user
   result = functions.checkCreditCardHasAUser(user, data, result);
 
   if (!result.status) {
+    //push req.body to payment.json
     payment.push({
       creditCardNumber: data.creditCardNumber,
       amount: data.amount,
     });
 
+    //save it to payment.json
     const database = JSON.stringify(payment, null, 2);
     fs.writeFile('./data/payment.json', database, (err) => {
       if (err) {
