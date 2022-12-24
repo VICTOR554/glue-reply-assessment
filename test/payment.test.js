@@ -163,18 +163,6 @@ describe('Create Payment Function', () => {
       res.should.be.a('object');
       res.should.have.property('statusCode');
       res.statusCode.should.equal(201);
-      res.should.have.property('statusMessage');
-      res.statusMessage.should.contain('Success');
     });
-    // it('it payment is valid', () => {
-    //   handler.createPayment(req, res);
-    //   res.should.be.a('object');
-    //   res.should.have.property('statusCode');
-    //   res.statusCode.should.equal(201);
-    //   resData = res._getJSONData();
-    //   resData.should.be.a('object');
-    //   resData.should.have.property('msg');
-    //   resData.msg.should.equal('Success');
-    // });
   });
 });

@@ -325,16 +325,5 @@ describe('Create User Function', () => {
       res.should.have.property('statusCode');
       res.statusCode.should.equal(201);
     });
-    // it('it should check user is valid', () => {
-    //   handler.createUser(req, res);
-    //   res.should.be.a('object');
-    //   res.should.have.property('statusCode');
-    //   res.statusCode.should.equal(201);
-    //   let resData = res._getJSONData();
-    //   resData.should.have.property('msg');
-    //   resData.msg.should.equal('Success');
-    //   resData.data.should.be.an('array');
-    //   resData.data.should.be.eql(user);
-    // });
   });
 });

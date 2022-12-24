@@ -73,9 +73,8 @@ registration.test.js holds 21 test cases, while payment.test.js holds 9 test cas
 
 ## Error in the Test script
 
-1. The valid unit test cases for payment and registration return a status code of 200, instead of 201. Out of 31 tests these 2 fail. However, when testing the API on postman the status code is 201.
-2. Whenever npm test is run the test newUser is added to the user database (data/user.json), so when npm test is run a second time it throws 409 which means that the user exists in the databse. This can be solve by either deleting the user or changing the username of newUser.
-3. If the test is showing 409 it means there is no user in the database that matches the
+1. Whenever npm test is run the test newUser is added to the user database (data/user.json), so when npm test is run a second time it throws 409 which means that the user exists in the databse. This can be solve by either deleting the user or changing the username of newUser.
+2. If the test is showing 409 it means there is no user in the database that matches the T1 set in the test
 
 ## Running the application
 

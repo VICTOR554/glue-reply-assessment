@@ -53,17 +53,10 @@ const createPayment = function (req, res) {
 
     //save it to data/payment.json
     const database = JSON.stringify(payment, null, 2);
-    fs.writeFile('./data/payment.json', database, (err) => {
-      if (err) {
-        result.status = 400;
-        result.msg = err;
-        res.status(result.status).send(result);
-      } else {
-        result.status = 201;
-        result.msg = 'Success';
-        res.status(result.status).send(result);
-      }
-    });
+    fs.writeFileSync('./data/payment.json', database);
+    result.status = 201;
+    result.msg = 'Success';
+    res.status(result.status).json(result);
   } else {
     res.status(result.status).json(result);
   }

@@ -70,18 +70,10 @@ const createUser = function (req, res) {
 
     //save it to data/registration.json
     const database = JSON.stringify(user, null, 2);
-    fs.writeFile(path, database, (err) => {
-      if (err) {
-        result.status = 400;
-        result.msg = err;
-
-        res.status(result.status).send(result);
-      } else {
-        result.status = 201;
-        result.msg = 'Success';
-        res.status(result.status).json(result);
-      }
-    });
+    fs.writeFileSync(path, database);
+    result.status = 201;
+    result.msg = 'Success';
+    res.status(result.status).send(result);
   } else {
     res.status(result.status).json(result);
   }
