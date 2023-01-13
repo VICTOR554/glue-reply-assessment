@@ -11,5 +11,12 @@
     "email": "victor@gmail.com",
     "dateOfBirth": "2002-12-01T00:00:00.000Z",
     "password": "Passcode1"
+  },
+  {
+    "username": "t12",
+    "email": "victor@gmail.com",
+    "dateOfBirth": "2005-01-12T00:00:00.000Z",
+    "creditCardNumber": 1234567890123456,
+    "password": "Passcode1"
   }
 ]

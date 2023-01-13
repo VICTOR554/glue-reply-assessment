@@ -48,15 +48,15 @@ const createUser = function (req, res) {
     return res.status(result.status).json(result);
   }
 
-  //functions to validate user is underage
-  result = functions.checkUserIsUnderage(data, result);
+  //functions to validate Registration Parameter
+  result = functions.validateRegistrationParameter(data, result);
 
   if (result.status) {
     return res.status(result.status).json(result);
   }
 
-  //functions to validate Registration Parameter
-  result = functions.validateRegistrationParameter(data, result);
+  //functions to validate user is underage
+  result = functions.checkUserIsUnderage(data, result);
 
   if (!result.status) {
     //push req.body to user[]
