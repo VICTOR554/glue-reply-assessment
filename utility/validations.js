@@ -125,7 +125,7 @@ const checkUserIsUnderage = function (data, result) {
 
 const checkUsernameIsInTheDatabase = function (oldData, newdata, result) {
   for (let i = 0; i < oldData.length; i++) {
-    if (oldData[i].username == newdata.username) {
+    if (oldData[i].username.toLowerCase() == newdata.username.toLowerCase()) {
       result.status = 409;
       result.msg += 'Username is already in the database';
     }
