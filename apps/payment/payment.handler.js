@@ -1,5 +1,6 @@
 const fs = require('fs');
-const database = fs.readFileSync('./data/payment.json');
+const path = './data/payment.json';
+const database = fs.readFileSync(path);
 const payment = JSON.parse(database);
 const functions = require('../../utility/validations');
 const database2 = fs.readFileSync('./data/user.json');
@@ -53,7 +54,7 @@ const createPayment = function (req, res) {
 
     //save it to data/payment.json
     const database = JSON.stringify(payment, null, 2);
-    fs.writeFileSync('./data/payment.json', database);
+    fs.writeFileSync(path, database);
     result.status = 201;
     result.msg = 'Success';
     res.status(result.status).json(result);
